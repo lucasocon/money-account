@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Container, Row, UncontrolledCollapse, Card, CardBody } from "reactstrap";
 import axios from 'axios';
+import { get } from 'lodash';
 
 
 const TransactionIndex = () => {
   const [transactions, setTransactions] = useState([]);
 
   const getTransactions = async () => {
-    const response = await axios.get('http://localhost:3000/transactions', {});
-    setTransactions(response.data.body);
+    try {
+      const response = await axios.get('http://localhost:3001/transactions');
+      setTransactions(get(response, 'data.body'));
+    } catch (error) {
+      console.error(error);
+      alert('Error trying to fetch API')
+    }
   };
 
   useEffect(() => {
@@ -17,7 +23,7 @@ const TransactionIndex = () => {
 
   return (
     <Container>
-      {transactions.length === 0 && <span>No transactions in the system</span>}
+      {!transactions.length && <span>No transactions in the system</span>}
       <Table responsive>
         <thead>
           <tr>
@@ -32,9 +38,7 @@ const TransactionIndex = () => {
                 <tr
                   key={`${transaction._id}`}
                   id={`transaction-${index}`}
-                  className={transaction.type == 'credit' ? 'alert-primary' : 'alert-danger'}
-                  style={{ cursor: "pointer", marginBottom: '1rem' }}
-                  onClick={() => {}}
+                  className={`table-row ${transaction.type == 'credit' ? 'alert-primary' : 'alert-danger'}`}
                 >
                   <td key={`${transaction.type}-id`}>
                     {transaction.type}

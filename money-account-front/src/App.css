@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+
+.table-row {
+  cursor: "pointer";
+  margin-bottom: '1rem';
+}

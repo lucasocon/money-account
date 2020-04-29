@@ -3,8 +3,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./db');
 const router = require('./routes');
+require('dotenv').config()
 
-db('mongodb+srv://lucas:154Lomaskpo!@cluster0-rma8v.mongodb.net/backend_node?retryWrites=true&w=majority')
+db(process.env.DB_HOST)
 
 var app  = express();
 app.use(bodyParser.json());
@@ -13,6 +14,5 @@ app.use(cors())
 
 router(app)
 
-
-app.listen(3000);
-console.log('The app is running on http://localhost:3000');
+app.listen(process.env.PORT);
+console.log(`The app is running on http://localhost:${process.env.PORT}`);

@@ -2,9 +2,7 @@
 const store = require('./store');
 
 function getTransactions() {
-  return new Promise((resolve, reject) => {
-    resolve(store.getTransactions());
-  });
+  return store.getTransactions();
 }
 
 function addTransaction(payload) {

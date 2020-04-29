@@ -4,7 +4,7 @@ const controller = require('./controller')
 
 const router = express.Router();
 
-router.get('/', function (req, res) {
+router.get('/', (req, res) => {
   controller.getTransactions().then((transactionList) => {
    response.success(req, res, transactionList, 200)
   })
@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
   })
 });
 
-router.post('/', function (req, res) {
+router.post('/', (req, res) => {
   const payload = {
     type: req.body.type,
     amount: req.body.amount
@@ -28,7 +28,7 @@ router.post('/', function (req, res) {
   })
 });
 
-router.get('/:id', function (req, res) {
+router.get('/:id', (req, res) => {
   controller.getTransaction(req.params.id)
   .then((transaction) => {
     if (transaction) {

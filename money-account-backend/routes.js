@@ -1,7 +1,7 @@
-const transaction = require('./components/transaction/network');
+const transactionRoutes = require('./components/transaction/routes');
 
-const routes = function (server) {
-  server.use('/transactions', transaction);
+const routes = (server) => {
+  server.use('/transactions', transactionRoutes);
 }
 
 module.exports = routes;
