@@ -1,21 +1,17 @@
-
 const store = require('./store');
 
-function getTransactions() {
+const getTransactions = () => {
   return store.getTransactions();
 }
 
-async function addTransaction(payload) {
-  const transaction = await store.addTransaction(payload);
+const addTransaction = (payload) => {
+  const transaction = store.addTransaction(payload);
 
-  return payload
+  return transaction;
 }
 
-async function getTransaction(id) {
-  if(!id) {
-    throw new Error('Invalid ID supplied');
-  }
-  const transaction = await store.getTransaction(id);
+const getTransaction = (id) => {
+  const transaction = store.getTransaction(id);
 
   return transaction;
 }

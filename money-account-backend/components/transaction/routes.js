@@ -1,11 +1,15 @@
 const express = require('express');
 const response = require('../../network/response');
-const controller = require('./controller')
-const { isValidTransaction } = require('../../middleware/transactionMiddleware')
+const controller = require('./controller');
+const {
+  checkIfIsLocked,
+  isValidTransaction,
+  checkValidId
+} = require('../../middleware/transactionMiddleware');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', checkIfIsLocked, async (req, res) => {
   try {
     const transactionList = await controller.getTransactions();
     response.success(req, res, transactionList, 200);
@@ -14,20 +18,26 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', isValidTransaction, async (req, res) => {
+router.post('/', [checkIfIsLocked, isValidTransaction], async (req, res) => {
   const payload = {
     type: req.body.type,
     amount: req.body.amount
   }
+
   try {
+    req.app.set('locked', true);
+
     const transaction = await controller.addTransaction(payload);
     response.success(req, res, transaction, 201);
+
+    req.app.set('locked', false);
   } catch (e) {
+    req.app.set('locked', false);
     response.error(req, res, e, 400, e);
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', [checkIfIsLocked, checkValidId], async (req, res) => {
   try {
     const transaction = await controller.getTransaction(req.params.id);
 

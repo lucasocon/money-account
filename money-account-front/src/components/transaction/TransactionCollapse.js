@@ -1,5 +1,5 @@
 import React from "react";
-import { UncontrolledCollapse, Card, CardBody } from "reactstrap";
+import { UncontrolledCollapse } from "reactstrap";
 
 const TransactionCollapse = ({ transaction, index }) => {
   return (

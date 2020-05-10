@@ -1,18 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const db = require('./db');
 const router = require('./routes');
-require('dotenv').config()
+require('dotenv').config();
 
-db(process.env.DB_HOST)
-
-var app  = express();
+var app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+app.set('locked', false);
 
-router(app)
+router(app);
 
-app.listen(process.env.PORT);
-console.log(`The app is running on http://localhost:${process.env.PORT}`);
+app.listen(process.env.PORT || 3000);
+console.log(`The app is running on http://localhost:${process.env.PORT || 3000}`);

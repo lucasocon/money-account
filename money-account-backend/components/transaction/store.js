@@ -1,34 +1,32 @@
-const Model = require('./model');
+const uuid = require('uuid');
+const {
+  find,
+  filter,
+  sum
+} = require('lodash');
 
-async function getBalance() {
-  const debitBalance = await Model.aggregate([
-    { $match: { type: 'debit' } },
-    { $group: { _id: null, amount: { $sum: { "$toDouble": "$amount" } } } }
-  ])
-  const creditBalance = await Model.aggregate([
-    { $match: { type: 'credit' } },
-    { $group: { _id: null, amount: { $sum: { "$toDouble": "$amount" } } } }
-  ])
+let transactions = []
 
-  return creditBalance[0].amount - debitBalance[0].amount;
+const getBalance = () => {
+  const debitAmounts = filter(transactions, { type: 'debit' }).map(transaction => transaction.amount);
+  const creditAmounts = filter(transactions, { type: 'credit' }).map(transaction => transaction.amount);
+
+  return sum(debitAmounts) - sum(creditAmounts);
 }
-
-async function getTransactions() {
-  const transactions = await Model.find({});
-
+const getTransactions = () => {
   return transactions;
 }
 
-function addTransaction(payload) {
-  const transaction = new Model(payload);
-  transaction.effectiveDate = new Date();
-  transaction.save();
+const addTransaction = (payload) => {
+  payload.id = uuid.v4();
+  payload.effectiveDate = new Date();
+  transactions.push(payload);
+
+  return payload;
 }
 
-async function getTransaction(id) {
-  const transaction = await Model.findOne({
-    _id: id
-  });
+const getTransaction = (id) => {
+  const transaction = find(transactions, { id });
 
   return transaction;
 }

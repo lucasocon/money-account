@@ -1,7 +1,5 @@
 import React from "react";
-import { UncontrolledCollapse, Card, CardBody } from "reactstrap";
 import TransactionCollapse from './TransactionCollapse'
-
 
 const TransactionTableRow = ({ transaction, index }) => {
   return (
@@ -9,7 +7,7 @@ const TransactionTableRow = ({ transaction, index }) => {
       <tr
         key={`${transaction._id}`}
         id={`transaction-${index}`}
-        className={`tabl ${transaction.type == 'credit' ? 'alert-primary' : 'alert-danger'}`} >
+        className={`tabl ${transaction.type === 'credit' ? 'alert-primary' : 'alert-danger'}`} >
         <td className="col-6" key={`${transaction.type}-id`}>
           {transaction.type}
         </td>
