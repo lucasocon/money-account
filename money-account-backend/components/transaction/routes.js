@@ -1,19 +1,20 @@
 const express = require('express');
 const response = require('../../network/response');
 const controller = require('./controller')
+const { isValidTransaction } = require('../../middleware/transactionMiddleware')
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  controller.getTransactions().then((transactionList) => {
-   response.success(req, res, transactionList, 200)
-  })
-  .catch((e) => {
+router.get('/', async (req, res) => {
+  try {
+    const transactionList = await controller.getTransactions();
+    response.success(req, res, transactionList, 200)
+  } catch (e) {
     response.error(req, res, 'Unexpected Error', 500, e);
-  })
+  }
 });
 
-router.post('/', (req, res) => {
+router.post('/', isValidTransaction, (req, res) => {
   const payload = {
     type: req.body.type,
     amount: req.body.amount
