@@ -5,25 +5,19 @@ function getTransactions() {
   return store.getTransactions();
 }
 
-function addTransaction(payload) {
-  return new Promise(async (resolve, reject) => {
-    store.addTransaction(payload);
+async function addTransaction(payload) {
+  const transaction = await store.addTransaction(payload);
 
-    resolve(payload);
-  })
+  return payload
 }
 
-function getTransaction(id) {
-  return new Promise(async (resolve, reject) => {
-    if(!id) {
-      reject('Invalid ID supplied');
+async function getTransaction(id) {
+  if(!id) {
+    throw new Error('Invalid ID supplied');
+  }
+  const transaction = await store.getTransaction(id);
 
-      return false;
-    }
-
-    const transaction = await store.getTransaction(id);
-    resolve(transaction);
-  });
+  return transaction;
 }
 
 module.exports = {
