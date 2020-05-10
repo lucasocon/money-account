@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
-import TransactionIndex from './components/TransactionIndex'
+import TransactionIndex from './components/transaction/TransactionIndex'
 
 function App() {
   return (
